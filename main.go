@@ -120,6 +120,7 @@ func main() {
 	var setA Set = Set{}
 	var setB Set = Set{}
 	//-------------------------------------------------------
+	fmt.Print("Warning: Please use 'space' for object separator")
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter Set A Objects: ")
 	text, _ := reader.ReadString('\n')
