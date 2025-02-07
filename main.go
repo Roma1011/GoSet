@@ -13,6 +13,66 @@ type Set struct {
 	set []string
 }
 
+// Union returns a new set that contains all unique elements from both input sets.
+func (Set) Union(firstSet Set, secondSet Set) Set {
+	var setA Set
+
+	if AllContains(firstSet.set, secondSet.set) {
+		setA.set = append(setA.set, firstSet.set...)
+		for _, elem := range secondSet.set {
+			if !setA.Contains(elem) {
+				setA.set = append(setA.set, elem)
+			}
+		}
+		return setA
+	}
+
+	setA.set = append(setA.set, firstSet.set...)
+
+	for _, elem := range secondSet.set {
+		if !setA.Contains(elem) {
+			setA.set = append(setA.set, elem)
+		}
+	}
+
+	return setA
+}
+
+// Intersect returns a new set that contains only the elements that are common in both input sets.
+func (Set) Intersect(firstSet Set, secondSet Set) Set {
+	var resultSet Set
+
+	for _, elem := range firstSet.set {
+		if secondSet.Contains(elem) {
+			resultSet.set = append(resultSet.set, elem)
+		}
+	}
+
+	return resultSet
+}
+
+// AllContains checks if all elements in the second set are contained in the first set.
+// It returns true if all elements of the second set are found in the first set, otherwise false.
+func AllContains(firstSet, secondSet []string) bool {
+	if len(secondSet) > len(firstSet) {
+		firstSet, secondSet = secondSet, firstSet
+	}
+
+	for i := 0; i < len(secondSet); i++ {
+		found := false
+		for j := 0; j < len(firstSet); j++ {
+			if secondSet[i] == firstSet[j] {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
+}
+
 // Empty Tests if a set is empty../*
 func (set *Set) Empty() bool {
 	if len(set.set) > 0 {
@@ -22,7 +82,7 @@ func (set *Set) Empty() bool {
 }
 
 // Contains Check if there's an element with the specified key in the set./*
-func (set *Set) Contains(item string) bool {
+func (set Set) Contains(item string) bool {
 
 	if set.Empty() {
 		return true
@@ -69,19 +129,27 @@ func DelimiterCount(char rune, source string) int {
 
 func main() {
 	var setA Set = Set{}
-
+	var setB Set = Set{}
+	//-------------------------------------------------------
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter Set A Objects: ")
 	text, _ := reader.ReadString('\n')
 	var buildString []string = SetBuilder(text)
-
-	var n int = (len(buildString) * 2) - (DelimiterCount(32, text)) - 1
-	println(n)
 	setA.set = make([]string, (len(buildString)*2)-(DelimiterCount(32, text))-1)
-
 	for i, str := range buildString {
 		setA.Insert(str, i)
 	}
 	sort.Strings(setA.set)
-	println(setA.Contains("A"))
+	//-------------------------------------------------------
+	reader = bufio.NewReader(os.Stdin)
+	fmt.Print("Enter Set B Objects: ")
+	text, _ = reader.ReadString('\n')
+	buildString = SetBuilder(text)
+	setB.set = make([]string, (len(buildString)*2)-(DelimiterCount(32, text))-1)
+	for i, str := range buildString {
+		setB.Insert(str, i)
+	}
+	sort.Strings(setB.set)
+	union := setA.Union(setB, setA)
+	fmt.Println(union)
 }
