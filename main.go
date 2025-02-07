@@ -14,31 +14,20 @@ type Set struct {
 }
 
 // Union returns a new set that contains all unique elements from both input sets.
+// A∪B={x∣x∈A∨x∈B}
 func (Set) Union(firstSet Set, secondSet Set) Set {
 	var setA Set
-
-	if AllContains(firstSet.set, secondSet.set) {
-		setA.set = append(setA.set, firstSet.set...)
-		for _, elem := range secondSet.set {
-			if !setA.Contains(elem) {
-				setA.set = append(setA.set, elem)
-			}
-		}
-		return setA
-	}
-
 	setA.set = append(setA.set, firstSet.set...)
-
 	for _, elem := range secondSet.set {
 		if !setA.Contains(elem) {
 			setA.set = append(setA.set, elem)
 		}
 	}
-
 	return setA
 }
 
 // Intersect returns a new set that contains only the elements that are common in both input sets.
+// A∩B={x∣x∈A∧x∈B}
 func (Set) Intersect(firstSet Set, secondSet Set) Set {
 	var resultSet Set
 
@@ -150,6 +139,6 @@ func main() {
 		setB.Insert(str, i)
 	}
 	sort.Strings(setB.set)
-	union := setA.Union(setB, setA)
-	fmt.Println(union)
+	//--------------------------------------------------------
+	_ := setA.Union(setB, setA)
 }
