@@ -32,6 +32,7 @@ func main() {
 		setB.Insert(str, i)
 	}
 	sort.Strings(setB.Set)
+	setA.Power()
 	//--------------------------------------------------------
 	var isSubset bool = setA.Subset(setB.Set)
 	fmt.Println("Is Set A a subset of Set B? ", isSubset)

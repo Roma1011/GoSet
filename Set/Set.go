@@ -1,6 +1,9 @@
 package Set
 
-import "errors"
+import (
+	"errors"
+	"math"
+)
 
 type StringSet struct {
 	Set []string
@@ -79,4 +82,18 @@ func (set StringSet) Subset(comparing []string) bool {
 		}
 	}
 	return true
+}
+
+// Power P(A)
+// all subsets of A
+func (set StringSet) Power() {
+	var iterator float64 = math.Pow(2, float64(len(set.Set)))
+	for i := 0; i < int(iterator); i++ {
+		for j := 0; j < len(set.Set); j++ {
+			if i&(1<<uint(j)) > 0 {
+				print(set.Set[j], " ")
+			}
+		}
+		println()
+	}
 }
