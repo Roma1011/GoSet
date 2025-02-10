@@ -12,7 +12,7 @@ func (StringSet) Union(firstSet StringSet, secondSet StringSet) StringSet {
 	var setA StringSet
 	setA.Set = append(setA.Set, firstSet.Set...)
 	for _, elem := range secondSet.Set {
-		if !setA.Contains(elem) {
+		if !setA.Belongs(elem) {
 			setA.Set = append(setA.Set, elem)
 		}
 	}
@@ -25,7 +25,7 @@ func (StringSet) Intersect(firstSet StringSet, secondSet StringSet) StringSet {
 	var resultSet StringSet
 
 	for _, elem := range firstSet.Set {
-		if secondSet.Contains(elem) {
+		if secondSet.Belongs(elem) {
 			resultSet.Set = append(resultSet.Set, elem)
 		}
 	}
@@ -41,9 +41,9 @@ func (set *StringSet) Empty() bool {
 	return true
 }
 
-// Contains Check if there's an element with the specified key in the set./*
-// If the set is empty, it will return true.
-func (set StringSet) Contains(item string) bool {
+// Belongs Check if there's an element with the specified key in the set./*
+// x ∈ B
+func (set StringSet) Belongs(item string) bool {
 
 	if set.Empty() {
 		return true
@@ -63,7 +63,7 @@ func (set *StringSet) Insert(param string, index int) error {
 	if index > len(set.Set) {
 		return errors.New("index out of range")
 	}
-	if set.Contains(param) {
+	if set.Belongs(param) {
 		return nil
 	}
 	set.Set[index] = param
@@ -74,7 +74,7 @@ func (set *StringSet) Insert(param string, index int) error {
 // A⊆B ⇔ ∀x(x∈A→x∈B)
 func (set StringSet) Subset(comparing []string) bool {
 	for _, elem := range comparing {
-		if !set.Contains(elem) {
+		if !set.Belongs(elem) {
 			return false
 		}
 	}
